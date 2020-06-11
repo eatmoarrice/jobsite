@@ -19,7 +19,6 @@ export default function Jobs() {
 	let [keyword, setKeyword] = useState(query.get(QUERYSTR_PREFIX));
 
 	const handleSearch = (e) => {
-		setIsLoading(true);
 		let filteredJobs = [];
 		if (e) {
 			e.preventDefault();
@@ -34,18 +33,15 @@ export default function Jobs() {
 			filteredJobs = originalList.filter((job) => job.title.toLowerCase().includes(keyword.toLowerCase()));
 			setJobList(filteredJobs);
 		}
-		setTimeout(() => setIsLoading(false), 1000);
 	};
 
 	const handleOnChange = (e) => {
 		if (e.target.value === "") {
-			setIsLoading(true);
 			if (originalList.length !== 0) {
 				setJobList(originalList);
 			}
 
 			history.replace("/jobs/");
-			setTimeout(() => setIsLoading(false), 1000);
 		}
 		setKeyword(e.target.value);
 	};
@@ -57,7 +53,7 @@ export default function Jobs() {
 			setJobList(jobs);
 			handleSearch();
 		});
-		setTimeout(() => setIsLoading(false), 1000);
+		setTimeout(() => setIsLoading(false), 500);
 	}, []);
 
 	return (
