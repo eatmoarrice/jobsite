@@ -6,20 +6,10 @@ import Home from "./components/Home";
 import Jobs from "./components/Jobs";
 import Login from "./components/Login";
 import Details from "./components/Details";
+import { useDispatch, useSelector } from "react-redux";
+import Logout from "./components/Logout";
 
 function App() {
-	const [jobs, setJobs] = useState(null);
-	const getData = async () => {
-		let url = `${process.env.REACT_APP_BACKEND_SERVER_URL}/jobs`;
-		let data = await fetch(url);
-		let result = await data.json();
-		setJobs(result);
-	};
-	console.log(jobs);
-	useEffect(() => {
-		getData();
-	}, []);
-
 	const FourOhFourPage = () => {
 		return (
 			<div className="four04">
@@ -28,25 +18,22 @@ function App() {
 			</div>
 		);
 	};
-
+	const user = useSelector((state) => state.user);
 	const ProtectedRoute = (props) => {
-		let user = true;
-		if (user === true) {
+		if (user.isAuthenticated === true) {
 			return <Route {...props} />;
 		} else {
 			return <Redirect to="/login" />;
 		}
 	};
 
-	if (jobs === null) {
-		return <div>loading</div>;
-	}
 	return (
 		<div className="App">
 			<Router>
 				<Switch>
 					<Route exact path="/" component={Home} />
-					<Route exact path="/jobs" render={(props) => <Jobs {...props} jobs={jobs} />} />
+					<Route exact path="/jobs" component={Jobs} />
+					<Route exact path="/logout" component={Logout} />
 					<Route exact path="/login" component={Login} />
 					<ProtectedRoute exact path="/jobs/:id" render={(props) => <Details {...props} />} />
 					<Route path="*" component={FourOhFourPage} />

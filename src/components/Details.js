@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+import Navigation from "./Navigation";
 
 export default function Details() {
 	const { id } = useParams();
@@ -19,43 +20,46 @@ export default function Details() {
 		return <div>loading...</div>;
 	}
 	return (
-		<div className="container h-100 align-items-center justify-content-center d-flex">
-			<div className="bigcard d-flex justify-content-center">
-				<div className="d-flex flex-column align-items-center">
-					<div className="companyPic">
-						<img width="100px" src={`${job.img}`} />
+		<div className="h-100">
+			<Navigation />
+			<div className="container h-100 align-items-center justify-content-center d-flex mt-5">
+				<div className="bigcard d-flex justify-content-center">
+					<div className="d-flex flex-column align-items-center">
+						<div className="companyPic">
+							<img width="100px" src={`${job.img}`} />
+						</div>
+						<div>
+							{job.tags.map((item, i) => {
+								return (
+									<span key={i} className="tags badge">
+										{item}
+									</span>
+								);
+							})}
+						</div>
 					</div>
-					<div>
-						{job.tags.map((item, i) => {
-							return (
-								<span key={i} className="tags badge">
-									{item}
-								</span>
-							);
-						})}
+					<div className="flex-column align-items-center border-left card-right">
+						<div>
+							<h3>{job.title}</h3>
+						</div>
+						<div>
+							{job.benefits.map((item, i) => {
+								return (
+									<span key={i} className="benefits badge">
+										{item}
+									</span>
+								);
+							})}
+						</div>
+						<div>{moment(job.time).fromNow()}</div>
+						<div>
+							<span className="money">${job.salary}</span>
+						</div>
+						<div>
+							<i className="fas fa-globe-asia"></i> {job.city}
+						</div>
+						<div className="description">{job.description}</div>
 					</div>
-				</div>
-				<div className="flex-column align-items-center border-left card-right">
-					<div>
-						<h3>{job.title}</h3>
-					</div>
-					<div>
-						{job.benefits.map((item, i) => {
-							return (
-								<span key={i} className="benefits badge">
-									{item}
-								</span>
-							);
-						})}
-					</div>
-					<div>{moment(job.time).fromNow()}</div>
-					<div>
-						<span className="money">${job.salary}</span>
-					</div>
-					<div>
-						<i className="fas fa-globe-asia"></i> {job.city}
-					</div>
-					<div className="description">{job.description}</div>
 				</div>
 			</div>
 		</div>
